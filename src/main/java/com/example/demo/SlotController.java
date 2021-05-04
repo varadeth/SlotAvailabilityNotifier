@@ -14,6 +14,8 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -61,10 +63,13 @@ public class SlotController {
 	}
 	
 	public void getSlotInfoForURL(URI uri) {
+		HttpHeaders headers = new HttpHeaders();
+        headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
+        HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
 		ResponseEntity<Map<String,List<CenterPojo>>> responseEntity = restTemplate.exchange(
 				uri, 
 			    HttpMethod.GET, 
-			    null, 
+			    entity, 
 			    new ParameterizedTypeReference<Map<String,List<CenterPojo>>>() {
 			    });
 		Map<String,List<CenterPojo>> centersRes = responseEntity.getBody();
